@@ -1,22 +1,30 @@
 # GATE 2027 — Two-Paper Combination Visual Explorer
 
-Interactive visualization of the GATE 2027 two-paper combination table from IIT Madras.
+An interactive browser-based visualization of the GATE 2027 two-paper combination table.
 
-## Explore
+## What it shows
 
-- Directed primary → secondary combination network
+- Interactive directed network of all 30 GATE papers
+- 118 primary → secondary relationships
 - Search and paper-focus controls
-- Paper-by-paper secondary-option counts
-- Interpretive domain clusters
-- Complete 30 × 30 primary/secondary matrix
-- Key analytical insights, including high-connectivity and no-secondary-option papers
+- Top-paper option ranking
+- Domain clusters
+- 30 × 30 primary → secondary matrix
+- Paper-level combination details
+- No external JavaScript library required
 
-## Important
+## Run locally
 
-The clusters are an analysis aid, not an official GATE classification. The official GATE 2027 website remains the source of truth for registration and permitted combinations. The official notice also states that additional combinations may be opened later and that combinations can be removed under unforeseen circumstances.
+Open `index.html` in a modern browser. The graph is generated entirely with browser JavaScript and SVG.
 
-## Live page
+## GitHub Pages
 
-Open `index.html` from the repository to view the explorer. If GitHub Pages is enabled for this repository, the same page can be served directly as the Pages site.
+This repository includes a GitHub Pages deployment workflow at `.github/workflows/pages.yml`.
 
-Organizing Institute: Indian Institute of Technology Madras.
+If Pages has not been enabled yet, go to **Settings → Pages** and set **Source** to **GitHub Actions**. After the workflow completes, the live visualization will be:
+
+`https://ektasharma-github.github.io/GATE-Visual-Explorer/`
+
+## Data note
+
+The visualization uses the GATE 2027 two-paper combination table supplied for this project. The clusters are analytical groupings and are not official GATE classifications. Always verify the final official combination list on the GATE 2027 website before making registration decisions.
