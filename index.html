@@ -1,74 +1,2423 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Interactive GATE 2027 two-paper combination visual explorer based on the IIT Madras combination table.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>GATE 2027 — Two-Paper Combination Visual Explorer</title>
+
+<meta name="description"
+      content="Interactive visualization and analysis of GATE 2027 two-paper combinations by IIT Madras.">
+
 <style>
-:root{--bg:#07111c;--panel:#0d1b2a;--panel2:#102438;--line:#24445c;--text:#edf7ff;--muted:#91a9bc;--cyan:#35d7ff;--blue:#72a7ff;--green:#65e6a8;--orange:#ffbd66;--pink:#ff7e9b;--purple:#b58cff;--danger:#ff6b7a;--shadow:0 18px 50px rgba(0,0,0,.28)}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 20% 0%,#102a40 0,#07111c 38%,#050c14 100%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.5}.wrap{width:min(1440px,94vw);margin:auto}.top{padding:24px 0 10px;border-bottom:1px solid var(--line)}.brand{display:flex;justify-content:space-between;gap:18px;align-items:center}.eyebrow{font:700 12px ui-monospace,SFMono-Regular,monospace;letter-spacing:.16em;color:var(--cyan);text-transform:uppercase}.brand h1{font-size:clamp(30px,5vw,58px);line-height:1;margin:10px 0 8px;letter-spacing:-.045em}.brand h1 span{color:var(--cyan)}.lede{max-width:900px;color:var(--muted);font-size:17px;margin:0 0 18px}.source{font-size:12px;color:var(--muted)}.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:18px 0}.stat,.card{background:linear-gradient(145deg,rgba(15,33,49,.95),rgba(8,21,34,.95));border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}.stat{padding:16px}.stat strong{display:block;font-size:28px}.stat span{color:var(--muted);font-size:12px}.controls{position:sticky;top:0;z-index:10;background:rgba(5,12,20,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:12px 0}.controls-inner{display:flex;flex-wrap:wrap;gap:9px;align-items:center}.controls label{font-size:12px;color:var(--muted)}select,input,button{font:inherit;color:var(--text);background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:9px 11px}input{min-width:250px}button{cursor:pointer}.active-btn{border-color:var(--cyan);color:var(--cyan)}main{padding-bottom:40px}.section{padding:30px 0}.section h2{margin:0 0 5px;font-size:27px}.note{color:var(--muted);margin:0 0 16px;font-size:13px}.layout{display:grid;grid-template-columns:1.6fr .8fr;gap:14px}.card{padding:16px}.network-card{min-height:650px}.network-wrap{height:600px;overflow:hidden;border-radius:12px;background:radial-gradient(circle at center,#102a3b 0,#081521 65%)}svg{width:100%;height:100%;display:block}.edge{stroke:#668196;stroke-width:1.2;opacity:.25;marker-end:url(#arrow)}.edge.active{stroke:var(--cyan);stroke-width:2.5;opacity:.95}.edge.dim{opacity:.04}.node{cursor:pointer}.node circle{stroke:#07111c;stroke-width:2}.node text{fill:#e8f3fb;font:700 10px ui-monospace,SFMono-Regular,monospace;text-anchor:middle;pointer-events:none}.node.dim{opacity:.12}.node.active circle{stroke:#fff;stroke-width:3}.side-stack{display:grid;gap:14px}.selected{border:1px solid var(--cyan);background:linear-gradient(145deg,rgba(18,55,72,.96),rgba(8,28,42,.96));border-radius:14px;padding:16px}.selected .code{font:800 25px ui-monospace,SFMono-Regular,monospace;color:var(--cyan)}.selected h3{margin:2px 0 8px}.pillbox{display:flex;flex-wrap:wrap;gap:6px}.pill{padding:6px 9px;border:1px solid #35647d;border-radius:999px;color:#dceefa;background:#10283a;font-size:12px;cursor:pointer}.pill:hover{border-color:var(--cyan)}.small{font-size:12px;color:var(--muted)}.legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;color:var(--muted);font-size:11px}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px}.bars{display:grid;gap:8px}.barrow{display:grid;grid-template-columns:38px 1fr 26px;gap:8px;align-items:center;font:12px ui-monospace,SFMono-Regular,monospace}.bar{height:10px;background:#1a2b3a;border-radius:999px;overflow:hidden}.bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--cyan),var(--blue))}.cluster-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.cluster{padding:14px;border:1px solid var(--line);border-radius:14px;background:rgba(10,27,42,.78);min-height:150px}.cluster h3{margin:0 0 3px;font-size:15px}.cluster small{color:var(--muted)}.cluster .pillbox{margin-top:10px}.matrix{overflow:auto;max-height:680px}.matrix table{border-collapse:collapse;min-width:1050px;font:10px ui-monospace,SFMono-Regular,monospace}.matrix th,.matrix td{border:1px solid #1d394f;width:34px;height:29px;text-align:center}.matrix th{background:#0b1d2d}.matrix thead th{position:sticky;top:0;z-index:2}.matrix tbody th{position:sticky;left:0;z-index:1;text-align:left;padding-left:7px}.matrix td.hit{background:rgba(101,230,168,.75);color:#05130c;font-weight:800}.matrix td.self{background:#203142;color:#6e8394}.insights{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.insight{padding:16px;border:1px solid var(--line);border-radius:14px;background:rgba(10,27,42,.75)}.insight strong{display:block;font-size:24px;color:var(--cyan)}.callout{border-left:3px solid var(--cyan);padding:11px 13px;background:rgba(53,215,255,.06);color:#c9dbe7;border-radius:8px;font-size:12px}.footer{border-top:1px solid var(--line);padding:22px 0 45px;color:var(--muted);font-size:11px}.footer a{color:var(--cyan)}@media(max-width:1050px){.stats{grid-template-columns:repeat(3,1fr)}.layout{grid-template-columns:1fr}.cluster-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:650px){.stats{grid-template-columns:repeat(2,1fr)}.cluster-grid,.insights{grid-template-columns:1fr}input{min-width:180px}.network-wrap{height:500px}.brand h1{font-size:34px}}
+:root {
+    --bg: #07111d;
+    --panel: #0d1b2a;
+    --panel2: #102338;
+    --border: #29435d;
+    --text: #eaf4ff;
+    --muted: #91a8bd;
+
+    --blue: #55a7ff;
+    --cyan: #29d8ff;
+    --green: #48df8b;
+    --yellow: #ffc857;
+    --red: #ff6b81;
+    --purple: #a875ff;
+    --gray: #8995a3;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background:
+        radial-gradient(
+            circle at 20% 0%,
+            rgba(41,216,255,.08),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 90% 30%,
+            rgba(168,117,255,.07),
+            transparent 35%
+        ),
+        var(--bg);
+
+    color: var(--text);
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+button,
+input,
+select {
+    font: inherit;
+}
+
+button,
+select,
+input {
+    color: var(--text);
+    background: #0b1928;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+button,
+select {
+    cursor: pointer;
+}
+
+button:hover,
+select:hover {
+    border-color: var(--cyan);
+}
+
+input::placeholder {
+    color: #71869b;
+}
+
+/* ---------------- HEADER ---------------- */
+
+header {
+    border-bottom: 1px solid var(--border);
+    background: rgba(7,17,29,.92);
+    backdrop-filter: blur(16px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-inner {
+    width: min(1500px, 94vw);
+    margin: auto;
+
+    min-height: 76px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 30px;
+}
+
+.logo {
+    font-weight: 900;
+    letter-spacing: .04em;
+    font-size: 24px;
+}
+
+.logo span {
+    color: var(--cyan);
+}
+
+.header-subtitle {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+/* ---------------- PAGE ---------------- */
+
+.container {
+    width: min(1500px, 94vw);
+    margin: auto;
+}
+
+.hero {
+    padding: 55px 0 30px;
+}
+
+.eyebrow {
+    color: var(--cyan);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+}
+
+h1 {
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: .98;
+    letter-spacing: -.045em;
+    margin: 14px 0;
+    max-width: 1000px;
+}
+
+h1 span {
+    color: var(--cyan);
+}
+
+.hero-description {
+    max-width: 850px;
+    color: var(--muted);
+    font-size: 18px;
+    line-height: 1.7;
+}
+
+/* ---------------- STATS ---------------- */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+
+    margin: 30px 0;
+}
+
+.stat {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(16,35,56,.95),
+            rgba(10,24,39,.95)
+        );
+
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+}
+
+.stat-number {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--cyan);
+}
+
+.stat-label {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+/* ---------------- CONTROLS ---------------- */
+
+.controls {
+    position: sticky;
+    top: 76px;
+    z-index: 50;
+
+    padding: 14px 0;
+
+    background: rgba(7,17,29,.88);
+    backdrop-filter: blur(18px);
+
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+}
+
+.controls-inner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.controls label {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+select,
+input,
+button {
+    padding: 10px 13px;
+}
+
+input {
+    min-width: 250px;
+}
+
+/* ---------------- LAYOUT ---------------- */
+
+.dashboard {
+    display: grid;
+    grid-template-columns: 280px 1fr 300px;
+    gap: 16px;
+
+    margin-top: 25px;
+}
+
+.card {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(13,27,42,.96),
+            rgba(9,20,33,.96)
+        );
+
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px;
+
+    overflow: hidden;
+}
+
+.card h2,
+.card h3 {
+    margin-top: 0;
+}
+
+.card h2 {
+    font-size: 20px;
+}
+
+.card h3 {
+    font-size: 15px;
+}
+
+.muted {
+    color: var(--muted);
+}
+
+/* ---------------- NETWORK ---------------- */
+
+.network-card {
+    min-height: 680px;
+}
+
+.network-wrapper {
+    width: 100%;
+    overflow: hidden;
+}
+
+svg {
+    width: 100%;
+    height: 620px;
+    display: block;
+}
+
+.edge {
+    stroke: #5e748a;
+    stroke-width: 1.3;
+    opacity: .38;
+    transition: all .2s;
+}
+
+.edge.active {
+    stroke: var(--cyan);
+    stroke-width: 3;
+    opacity: 1;
+}
+
+.edge.dim {
+    opacity: .04;
+}
+
+.node {
+    cursor: pointer;
+    transition: opacity .2s;
+}
+
+.node.dim {
+    opacity: .12;
+}
+
+.node circle {
+    stroke: #06101b;
+    stroke-width: 2;
+}
+
+.node text {
+    fill: #eaf4ff;
+    font-size: 11px;
+    font-family: monospace;
+    font-weight: 700;
+    pointer-events: none;
+}
+
+.node.selected circle {
+    stroke: white;
+    stroke-width: 3;
+}
+
+/* ---------------- SEARCH ---------------- */
+
+.search-results {
+    margin-top: 12px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.paper-option {
+    padding: 10px;
+    border-bottom: 1px solid #1b3248;
+    cursor: pointer;
+}
+
+.paper-option:hover {
+    background: #102b43;
+}
+
+.paper-code {
+    font-family: monospace;
+    font-weight: 800;
+}
+
+.paper-name {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* ---------------- TOP PAPERS ---------------- */
+
+.bar-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.bar-row {
+    display: grid;
+    grid-template-columns: 40px 1fr 28px;
+    align-items: center;
+    gap: 8px;
+
+    font-family: monospace;
+    font-size: 12px;
+}
+
+.bar {
+    height: 10px;
+    background: #1a2b3c;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        var(--purple),
+        var(--cyan)
+    );
+
+    border-radius: 999px;
+}
+
+/* ---------------- DETAILS ---------------- */
+
+.details-title {
+    color: var(--cyan);
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.details-code {
+    font-family: monospace;
+    color: var(--yellow);
+}
+
+.combination-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 12px;
+}
+
+.combination {
+    padding: 7px 10px;
+    border-radius: 999px;
+
+    background: #102f48;
+    border: 1px solid #285b7c;
+
+    color: #ccecff;
+
+    font-family: monospace;
+    font-size: 12px;
+}
+
+/* ---------------- CLUSTERS ---------------- */
+
+.section {
+    padding: 45px 0;
+}
+
+.section-title {
+    font-size: 30px;
+    margin-bottom: 6px;
+}
+
+.section-description {
+    color: var(--muted);
+    margin-top: 0;
+}
+
+.cluster-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+
+.cluster {
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 18px;
+
+    background: #0b1928;
+}
+
+.cluster h3 {
+    margin-bottom: 5px;
+}
+
+.cluster-description {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.cluster-papers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 15px;
+}
+
+.cluster-chip {
+    padding: 6px 8px;
+
+    border: 1px solid #2b4962;
+    border-radius: 8px;
+
+    font-family: monospace;
+    font-size: 11px;
+
+    cursor: pointer;
+}
+
+.cluster-chip:hover {
+    border-color: var(--cyan);
+    background: #102b43;
+}
+
+/* ---------------- MATRIX ---------------- */
+
+.matrix-container {
+    overflow: auto;
+    max-height: 700px;
+}
+
+.matrix {
+    border-collapse: collapse;
+    width: 100%;
+
+    min-width: 1050px;
+
+    font-family: monospace;
+    font-size: 11px;
+}
+
+.matrix th,
+.matrix td {
+    border: 1px solid #20384e;
+
+    width: 34px;
+    height: 32px;
+
+    text-align: center;
+}
+
+.matrix th {
+    background: #0c1d30;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.matrix th:first-child {
+    left: 0;
+    z-index: 4;
+}
+
+.matrix td:first-child {
+    position: sticky;
+    left: 0;
+
+    background: #0c1d30;
+
+    font-weight: 800;
+}
+
+.matrix .allowed {
+    background: rgba(72,223,139,.78);
+    color: #04140a;
+    font-weight: 900;
+}
+
+.matrix .self {
+    background: #253546;
+    color: #667789;
+}
+
+/* ---------------- INSIGHTS ---------------- */
+
+.insights {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+
+.insight {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+
+    padding: 20px;
+
+    background: #0b1928;
+}
+
+.insight-number {
+    color: var(--cyan);
+    font-size: 28px;
+    font-weight: 900;
+}
+
+.insight-title {
+    margin: 6px 0;
+    font-weight: 800;
+}
+
+.insight-text {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* ---------------- LEGEND ---------------- */
+
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+
+    margin-top: 12px;
+
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.legend-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+}
+
+/* ---------------- CALLOUT ---------------- */
+
+.callout {
+    margin-top: 15px;
+
+    padding: 13px 15px;
+
+    border-left: 3px solid var(--cyan);
+
+    background: rgba(41,216,255,.05);
+
+    border-radius: 8px;
+
+    color: #c9d9e8;
+
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+/* ---------------- FOOTER ---------------- */
+
+footer {
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+
+    padding: 35px 0 55px;
+
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.footer-inner {
+    width: min(1500px, 94vw);
+    margin: auto;
+
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+/* ---------------- RESPONSIVE ---------------- */
+
+@media(max-width:1100px) {
+
+    .dashboard {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .network-card {
+        grid-column: 1 / -1;
+        grid-row: 1;
+    }
+
+    .cluster-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width:750px) {
+
+    .stats {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .network-card {
+        grid-column: auto;
+    }
+
+    .cluster-grid,
+    .insights {
+        grid-template-columns: 1fr;
+    }
+
+    svg {
+        height: 500px;
+    }
+
+    input {
+        min-width: 100%;
+    }
+
+    .footer-inner {
+        flex-direction: column;
+    }
+}
 </style>
 </head>
+
 <body>
-<header class="top"><div class="wrap">
-  <div class="brand"><div><div class="eyebrow">GATE 2027 · IIT MADRAS</div><h1>Two-Paper <span>Combination</span> Visual Explorer</h1><p class="lede">Explore which GATE 2027 papers can be paired, identify highly connected papers, inspect domain clusters, and analyse the complete primary → secondary relationship matrix.</p><div class="source">Source: GATE 2027 Two-Paper Combination table supplied from the IIT Madras GATE 2027 website.</div></div></div>
-  <div class="stats" id="stats"></div>
-</div></header>
-<div class="controls"><div class="wrap controls-inner">
-  <label>Focus <select id="focus"><option value="ALL">All papers</option></select></label>
-  <label>Search <input id="search" placeholder="Search code or paper name…"></label>
-  <button id="reset">Reset</button><button id="matrixBtn">Jump to matrix</button>
-</div></div>
-<main class="wrap">
-<section class="section"><h2>1 · Combination network</h2><p class="note">A directed arrow A → B means B is permitted as the secondary paper when A is the primary paper. Node size reflects the number of secondary options.</p>
-<div class="layout"><div class="card network-card"><div class="network-wrap"><svg id="network" viewBox="0 0 900 600" aria-label="GATE 2027 two-paper combination network"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#668196"></path></marker></defs></svg></div><div class="legend" id="legend"></div></div>
-<div class="side-stack"><div class="card"><div id="selected" class="selected"></div></div><div class="card"><h3>Most secondary options</h3><p class="small">This is the number of permitted secondary papers for each primary paper.</p><div id="bars" class="bars"></div></div><div class="card"><div class="callout"><strong>Important:</strong> the clustering below is an interpretive analysis aid. The official GATE table is the authority for allowed combinations. GATE 2027 notes that additional combinations may be opened later and some combinations may be removed under unforeseen circumstances.</div></div></div></div></section>
-<section class="section"><h2>2 · Domain clusters</h2><p class="note">Interpretive clusters designed to make the network easier to understand. A paper appears in exactly one visual cluster; cluster membership is not an official GATE classification.</p><div id="clusters" class="cluster-grid"></div></section>
-<section class="section"><h2>3 · Pairwise combination matrix</h2><p class="note">Green = allowed primary → secondary combination. Grey diagonal = same paper. Blank = not listed as an allowed secondary combination.</p><div class="card matrix"><table id="matrix"></table></div></section>
-<section class="section"><h2>4 · Key analytical insights</h2><div class="insights" id="insights"></div></section>
+
+<!-- ================= HEADER ================= -->
+
+<header>
+
+<div class="header-inner">
+
+<div>
+    <div class="logo">GATE <span>2027</span></div>
+    <div class="header-subtitle">
+        Two-Paper Combination Visual Explorer
+    </div>
+</div>
+
+<div class="header-subtitle">
+    Organizing Institute: IIT Madras
+</div>
+
+</div>
+
+</header>
+
+
+<!-- ================= HERO ================= -->
+
+<main class="container">
+
+<section class="hero">
+
+<div class="eyebrow">
+GATE 2027 · DECISION & ANALYSIS TOOL
+</div>
+
+<h1>
+Understand your
+<span>Two-Paper</span>
+Combination Options.
+</h1>
+
+<p class="hero-description">
+
+Explore the official GATE 2027 two-paper combination table
+through an interactive network graph, paper clusters,
+option rankings and a primary → secondary combination matrix.
+
+This visualization is intended to make the structure of the
+allowed combinations easier to understand and analyse.
+
+</p>
+
+</section>
+
+
+<!-- ================= STATS ================= -->
+
+<div class="stats">
+
+<div class="stat">
+<div class="stat-number">30</div>
+<div class="stat-label">GATE Test Papers</div>
+</div>
+
+<div class="stat">
+<div class="stat-number" id="totalRelationships">118</div>
+<div class="stat-label">Directed Allowed Relationships</div>
+</div>
+
+<div class="stat">
+<div class="stat-number" id="mostOptions">10</div>
+<div class="stat-label">Maximum Options — XE</div>
+</div>
+
+<div class="stat">
+<div class="stat-number">0</div>
+<div class="stat-label">Options — MN</div>
+</div>
+
+</div>
+
+
+<!-- ================= CONTROLS ================= -->
+
+<div class="controls">
+
+<div class="controls-inner">
+
+<label>
+Focus Paper
+</label>
+
+<select id="paperSelect">
+<option value="ALL">All Papers</option>
+</select>
+
+
+<label>
+Search
+</label>
+
+<input
+    id="searchInput"
+    type="text"
+    placeholder="Search code or paper name..."
+>
+
+
+<button id="resetButton">
+Reset
+</button>
+
+</div>
+
+</div>
+
+
+<!-- ================= MAIN DASHBOARD ================= -->
+
+<section class="dashboard">
+
+
+<!-- LEFT PANEL -->
+
+<div>
+
+<div class="card">
+
+<h3>
+Explore Papers
+</h3>
+
+<p class="muted">
+Select a paper to highlight its permitted
+secondary-paper combinations.
+</p>
+
+<div
+    id="searchResults"
+    class="search-results">
+</div>
+
+</div>
+
+
+<div class="card" style="margin-top:16px">
+
+<h3>
+Top Papers by Options
+</h3>
+
+<p class="muted">
+Number of permitted secondary papers.
+</p>
+
+<div
+    id="barList"
+    class="bar-list">
+</div>
+
+</div>
+
+
+<div class="card" style="margin-top:16px">
+
+<h3>
+How to Read the Graph
+</h3>
+
+<div class="callout">
+
+<strong>Node</strong>
+= GATE test paper
+
+<br><br>
+
+<strong>Arrow A → B</strong>
+= B is allowed as a secondary paper when
+A is selected as the primary paper.
+
+<br><br>
+
+<strong>Larger node</strong>
+= more available secondary-paper options.
+
+<br><br>
+
+<strong>Click a node</strong>
+to highlight its relationships.
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- CENTER NETWORK -->
+
+<div class="card network-card">
+
+<h2>
+GATE 2027 Combination Network
+</h2>
+
+<p class="muted">
+
+Each node represents one of the 30 GATE test papers.
+Arrows show the permitted primary → secondary relationship.
+
+</p>
+
+<div class="network-wrapper">
+
+<svg
+    id="network"
+    viewBox="0 0 900 620"
+    aria-label="GATE 2027 two-paper combination network">
+</svg>
+
+</div>
+
+<div class="legend">
+
+<div class="legend-item">
+<span
+class="legend-dot"
+style="background:#55a7ff">
+</span>
+Computing & AI
+</div>
+
+<div class="legend-item">
+<span
+class="legend-dot"
+style="background:#ff6b81">
+</span>
+Core Engineering
+</div>
+
+<div class="legend-item">
+<span
+class="legend-dot"
+style="background:#ffc857">
+</span>
+Earth / Environment
+</div>
+
+<div class="legend-item">
+<span
+class="legend-dot"
+style="background:#48df8b">
+</span>
+Life / Chemistry
+</div>
+
+<div class="legend-item">
+<span
+class="legend-dot"
+style="background:#8995a3">
+</span>
+Other
+</div>
+
+</div>
+
+</div>
+
+
+<!-- RIGHT PANEL -->
+
+<div>
+
+<div class="card">
+
+<h3>
+Selected Paper
+</h3>
+
+<div id="details">
+
+<div class="details-title">
+All Papers
+</div>
+
+<p class="muted">
+Click any node or select a paper to see
+its permitted combinations.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="card" style="margin-top:16px">
+
+<h3>
+Quick Analysis
+</h3>
+
+<div class="callout">
+
+The most connected papers are especially useful
+for candidates considering a second paper because
+they offer more permitted choices.
+
+</div>
+
+<div class="callout">
+
+Remember that the combination table only tells you
+whether a pairing is permitted. It does not indicate
+difficulty, syllabus overlap, admission probability,
+rank prediction or score prediction.
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- ================= CLUSTERS ================= -->
+
+<section class="section">
+
+<h2 class="section-title">
+Domain Clusters
+</h2>
+
+<p class="section-description">
+
+These clusters are analytical groupings designed to make
+the network easier to understand. They do not change the
+official GATE combination rules.
+
+</p>
+
+<div
+id="clusterGrid"
+class="cluster-grid">
+</div>
+
+</section>
+
+
+<!-- ================= MATRIX ================= -->
+
+<section class="section">
+
+<h2 class="section-title">
+Two-Paper Combination Matrix
+</h2>
+
+<p class="section-description">
+
+Rows represent the primary paper.
+Columns represent the secondary paper.
+Green cells indicate an officially permitted combination.
+
+</p>
+
+<div class="card matrix-container">
+
+<table
+id="matrix"
+class="matrix">
+</table>
+
+</div>
+
+</section>
+
+
+<!-- ================= INSIGHTS ================= -->
+
+<section class="section">
+
+<h2 class="section-title">
+Key Insights
+</h2>
+
+<div class="insights">
+
+<div class="insight">
+
+<div class="insight-number">
+XE
+</div>
+
+<div class="insight-title">
+Most Secondary Options
+</div>
+
+<div class="insight-text">
+
+Engineering Sciences has the largest number
+of permitted secondary-paper options in the
+provided table.
+
+</div>
+
+</div>
+
+
+<div class="insight">
+
+<div class="insight-number">
+DA
+</div>
+
+<div class="insight-title">
+Computing / AI Hub
+</div>
+
+<div class="insight-text">
+
+Data Science & Artificial Intelligence connects
+to several computing, mathematics, statistics,
+engineering and science papers.
+
+</div>
+
+</div>
+
+
+<div class="insight">
+
+<div class="insight-number">
+MN
+</div>
+
+<div class="insight-title">
+No Secondary Options
+</div>
+
+<div class="insight-text">
+
+Mining Engineering has no secondary-paper options
+in the supplied GATE 2027 table.
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
 </main>
-<footer class="wrap footer">GATE 2027 Two-Paper Combination Visual Explorer · Educational analysis tool · Always verify the latest official GATE 2027 website before registration. Organizing Institute: Indian Institute of Technology Madras.</footer>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+<div class="footer-inner">
+
+<div>
+
+<strong>GATE 2027</strong><br>
+
+Graduate Aptitude Test in Engineering<br>
+
+Indian Institute of Technology Madras
+
+</div>
+
+<div>
+
+Visualization based on the GATE 2027
+two-paper combination table supplied
+for this project.
+
+<br><br>
+
+Always verify the final combination list
+on the official GATE 2027 website.
+
+</div>
+
+</div>
+
+</footer>
+
+
 <script>
-const rows={AE:['CE','ME','XE'],AG:['CE'],AR:['CE','GE'],BM:['BT','IN'],BT:['BM','ES','EY','XL'],CE:['AE','AG','AR','ES','GE','NM','XE'],CH:['ES','PE','XE'],CS:['DA','EC','GE','MA','ME','PH','RA','ST'],CY:['XE','XL'],DA:['CS','EC','EE','MA','ME','PH','RA','ST','XE'],EC:['CS','DA','EE','IN','PH','RA'],EE:['DA','EC','IN','PH','RA'],ES:['BT','CE','CH','GE'],EY:['BT','XL'],GE:['AR','CE','CS','ES','GG'],GG:['GE'],IN:['BM','EC','EE','ME','RA'],MA:['CS','DA','PH','ST'],ME:['AE','CS','DA','IN','NM','PI','RA','XE'],MN:[],MT:['XE'],NM:['CE','ME','XE'],PE:['CH'],PH:['CS','DA','EC','EE','MA','XE'],PI:['ME','XE'],RA:['CS','DA','EC','EE','IN','ME'],ST:['CS','DA','MA','XH'],XE:['AE','CE','CH','CY','DA','ME','MT','NM','PH','PI'],XH:['ST'],XL:['BT','CY','EY']};
-const names={AE:'Aerospace Engineering',AG:'Agricultural Engineering',AR:'Architecture and Planning',BM:'Biomedical Engineering',BT:'Biotechnology',CE:'Civil Engineering',CH:'Chemical Engineering',CS:'Computer Science & IT',CY:'Chemistry',DA:'Data Science & AI',EC:'Electronics & Communication Engineering',EE:'Electrical Engineering',ES:'Environmental Science & Engineering',EY:'Ecology and Evolution',GE:'Geomatics Engineering',GG:'Geology & Geophysics',IN:'Instrumentation Engineering',MA:'Mathematics',ME:'Mechanical Engineering',MN:'Mining Engineering',MT:'Metallurgical Engineering',NM:'Naval Architecture & Marine Engineering',PE:'Petroleum Engineering',PH:'Physics',PI:'Production & Industrial Engineering',RA:'Robotics & Automation',ST:'Statistics',XE:'Engineering Sciences',XH:'Humanities & Social Sciences',XL:'Life Sciences'};
-const clusters={
-'Computing & Quantitative':['CS','DA','EC','EE','IN','MA','RA','ST'],
-'Core Engineering':['AE','CE','CH','ME','MT','NM','PE','PI','XE'],
-'Earth, Environment & Built':['AG','AR','ES','GE','GG','MN'],
-'Life, Bio & Chemical':['BM','BT','CY','EY','XL'],
-'Science & Humanities':['PH','XH']
+
+/* =========================================================
+   GATE 2027 OFFICIAL TWO-PAPER COMBINATION DATA
+   ========================================================= */
+
+const rows = {
+
+    AE: ["CE","ME","XE"],
+
+    AG: ["CE"],
+
+    AR: ["CE","GE"],
+
+    BM: ["BT","IN"],
+
+    BT: ["BM","ES","EY","XL"],
+
+    CE: ["AE","AG","AR","ES","GE","NM","XE"],
+
+    CH: ["ES","PE","XE"],
+
+    CS: ["DA","EC","GE","MA","ME","PH","RA","ST"],
+
+    CY: ["XE","XL"],
+
+    DA: ["CS","EC","EE","MA","ME","PH","RA","ST","XE"],
+
+    EC: ["CS","DA","EE","IN","PH","RA"],
+
+    EE: ["DA","EC","IN","PH","RA"],
+
+    ES: ["BT","CE","CH","GE"],
+
+    EY: ["BT","XL"],
+
+    GE: ["AR","CE","CS","ES","GG"],
+
+    GG: ["GE"],
+
+    IN: ["BM","EC","EE","ME","RA"],
+
+    MA: ["CS","DA","PH","ST"],
+
+    ME: ["AE","CS","DA","IN","NM","PI","RA","XE"],
+
+    MN: [],
+
+    MT: ["XE"],
+
+    NM: ["CE","ME","XE"],
+
+    PE: ["CH"],
+
+    PH: ["CS","DA","EC","EE","MA","XE"],
+
+    PI: ["ME","XE"],
+
+    RA: ["CS","DA","EC","EE","IN","ME"],
+
+    ST: ["CS","DA","MA","XH"],
+
+    XE: ["AE","CE","CH","CY","DA","ME","MT","NM","PI"],
+
+    XH: ["ST"],
+
+    XL: ["BT","CY","EY"]
+
 };
-const clusterColors={'Computing & Quantitative':'#72a7ff','Core Engineering':'#ff7e9b','Earth, Environment & Built':'#ffbd66','Life, Bio & Chemical':'#65e6a8','Science & Humanities':'#b58cff'};
-const papers=Object.keys(rows), degree=Object.fromEntries(papers.map(p=>[p,rows[p].length]));
-const directed=papers.reduce((n,p)=>n+rows[p].length,0); const unique=new Set(); papers.forEach(a=>rows[a].forEach(b=>unique.add([a,b].sort().join('-'))));
-const maxDegree=Math.max(...papers.map(p=>degree[p])); const top=papers.filter(p=>degree[p]===maxDegree); const zero=papers.filter(p=>degree[p]===0);
-const stats=document.getElementById('stats'); stats.innerHTML=[['30','Test papers'],[directed,'Directed allowed combinations'],[unique.size,'Unique paper relationships'],[maxDegree,`Most options (${top.join(', ')})`],[zero.length,`No secondary options (${zero.join(', ')})`]].map(x=>`<div class="stat"><strong>${x[0]}</strong><span>${x[1]}</span></div>`).join('');
-const focus=document.getElementById('focus'); papers.forEach(p=>focus.insertAdjacentHTML('beforeend',`<option value="${p}">${p} — ${names[p]}</option>`));
-function esc(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
-function clusterOf(p){return Object.entries(clusters).find(([,ps])=>ps.includes(p))?.[0]||'Other'}
-function radius(p){return 10+degree[p]*1.7}
-const svg=document.getElementById('network'), W=900,H=600,cx=W/2,cy=H/2; const positions={};
-const groups=Object.entries(clusters); groups.forEach(([c,ps],gi)=>{const ring=gi<2?175:235; const centerAngle=(-Math.PI/2)+(gi/groups.length)*Math.PI*2; const gcx=cx+Math.cos(centerAngle)*95,gcy=cy+Math.sin(centerAngle)*95; ps.forEach((p,i)=>{const a=centerAngle-Math.PI/2+(i/Math.max(ps.length,1))*Math.PI*2; positions[p]={x:gcx+Math.cos(a)*ring,y:gcy+Math.sin(a)*ring*.68}})});
-// Pull very sparse MN toward an outer location for readability.
-positions.MN={x:cx+345,y:cy+205};
-const edges=[]; papers.forEach(a=>rows[a].forEach(b=>edges.push([a,b])));
-const edgeEls=[]; edges.forEach(([a,b])=>{const e=document.createElementNS('http://www.w3.org/2000/svg','line');e.setAttribute('x1',positions[a].x);e.setAttribute('y1',positions[a].y);e.setAttribute('x2',positions[b].x);e.setAttribute('y2',positions[b].y);e.classList.add('edge');svg.appendChild(e);edgeEls.push({e,a,b})});
-const nodeEls={}; papers.forEach(p=>{const g=document.createElementNS('http://www.w3.org/2000/svg','g');g.classList.add('node');g.dataset.p=p;g.setAttribute('transform',`translate(${positions[p].x},${positions[p].y})`);const c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('r',radius(p));c.setAttribute('fill',clusterColors[clusterOf(p)]);g.appendChild(c);const t=document.createElementNS('http://www.w3.org/2000/svg','text');t.setAttribute('y','4');t.textContent=p;g.appendChild(t);g.addEventListener('click',()=>selectPaper(p));svg.appendChild(g);nodeEls[p]=g});
-function selectPaper(p){focus.value=p;document.getElementById('search').value=''; update(p)}
-function update(focusPaper='ALL'){
-const q=document.getElementById('search').value.trim().toLowerCase(); const selected=focusPaper!=='ALL'?focusPaper:null;
-Object.entries(nodeEls).forEach(([p,g])=>{const matches=!q||p.toLowerCase().includes(q)||names[p].toLowerCase().includes(q);const relevant=!selected||p===selected||rows[selected].includes(p)||rows[p].includes(selected);g.classList.toggle('dim',!(matches&&relevant));g.classList.toggle('active',p===selected)});
-edgeEls.forEach(({e,a,b})=>{const relevant=selected&&(a===selected||b===selected);const matches=(!q||(a+' '+names[a]+' '+b+' '+names[b]).toLowerCase().includes(q));e.classList.toggle('active',!!relevant);e.classList.toggle('dim',!!selected&&!relevant||!!q&&!matches)});
-renderSelected(selected);}
-function renderSelected(p){const el=document.getElementById('selected');if(!p){el.innerHTML='<div class="code">ALL</div><h3>All GATE 2027 papers</h3><p class="small">Click any node or choose a paper to inspect its permitted secondary combinations.</p><div class="callout">The network is directed. For example, CS → DA means DA is permitted as the secondary paper when CS is primary. The reverse direction must also be listed to be considered allowed.</div>';return}const bs=rows[p];el.innerHTML=`<div class="code">${p}</div><h3>${esc(names[p])}</h3><p class="small">${degree[p]} permitted secondary option${degree[p]===1?'':'s'}</p><div class="pillbox">${bs.length?bs.map(b=>`<span class="pill" onclick="selectPaper('${b}')">${b}</span>`).join(''):'<span class="small">No secondary paper is listed.</span>'}</div>`}
-renderSelected();
-const bars=document.getElementById('bars'); [...papers].sort((a,b)=>degree[b]-degree[a]).forEach(p=>bars.insertAdjacentHTML('beforeend',`<div class="barrow"><b>${p}</b><span class="bar"><i style="width:${degree[p]/maxDegree*100}%"></i></span><span>${degree[p]}</span></div>`));
-const legend=document.getElementById('legend'); legend.innerHTML=groups.map(([c])=>`<span><i class="dot" style="background:${clusterColors[c]}"></i>${c}</span>`).join('');
-const clustersEl=document.getElementById('clusters'); groups.forEach(([c,ps])=>clustersEl.insertAdjacentHTML('beforeend',`<div class="cluster"><h3 style="color:${clusterColors[c]}">${c}</h3><small>${ps.length} papers</small><div class="pillbox">${ps.map(p=>`<span class="pill" onclick="selectPaper('${p}')">${p}</span>`).join('')}</div></div>`));
-function renderMatrix(){let h='<thead><tr><th>Primary ↓ / Secondary →</th>'+papers.map(p=>`<th title="${names[p]}">${p}</th>`).join('')+'</tr></thead><tbody>';papers.forEach(a=>{h+=`<tr><th>${a}</th>`+papers.map(b=>a===b?'<td class="self">—</td>':rows[a].includes(b)?'<td class="hit">●</td>':'<td>·</td>').join('')+'</tr>'});document.getElementById('matrix').innerHTML=h+'</tbody>'}renderMatrix();
-const insights=[['DA','Data Science & AI has the widest choice: 9 secondary papers.'],['XE','Engineering Sciences is the strongest hub in this table: 10 secondary papers and links across multiple engineering/science areas.'],['MN','Mining Engineering has no listed secondary option in the supplied table.']]; document.getElementById('insights').innerHTML=insights.map(([p,t])=>`<div class="insight"><strong>${p}</strong><div>${t}</div><p class="small">${names[p]}</p></div>`).join('');
-const search=document.getElementById('search'); search.addEventListener('input',()=>update(focus.value==='ALL'? 'ALL':focus.value)); focus.addEventListener('change',()=>update(focus.value)); document.getElementById('reset').addEventListener('click',()=>{focus.value='ALL';search.value='';update('ALL')}); document.getElementById('matrixBtn').addEventListener('click',()=>document.querySelector('.matrix').scrollIntoView({behavior:'smooth'}));
-update('ALL');
+
+
+/* =========================================================
+   PAPER NAMES
+   ========================================================= */
+
+const names = {
+
+    AE: "Aerospace Engineering",
+
+    AG: "Agricultural Engineering",
+
+    AR: "Architecture and Planning",
+
+    BM: "Biomedical Engineering",
+
+    BT: "Biotechnology",
+
+    CE: "Civil Engineering",
+
+    CH: "Chemical Engineering",
+
+    CS: "Computer Science & Information Technology",
+
+    CY: "Chemistry",
+
+    DA: "Data Science & Artificial Intelligence",
+
+    EC: "Electronics & Communication Engineering",
+
+    EE: "Electrical Engineering",
+
+    ES: "Environmental Science & Engineering",
+
+    EY: "Ecology and Evolution",
+
+    GE: "Geomatics Engineering",
+
+    GG: "Geology & Geophysics",
+
+    IN: "Instrumentation Engineering",
+
+    MA: "Mathematics",
+
+    ME: "Mechanical Engineering",
+
+    MN: "Mining Engineering",
+
+    MT: "Metallurgical Engineering",
+
+    NM: "Naval Architecture & Marine Engineering",
+
+    PE: "Petroleum Engineering",
+
+    PH: "Physics",
+
+    PI: "Production & Industrial Engineering",
+
+    RA: "Robotics & Automation",
+
+    ST: "Statistics",
+
+    XE: "Engineering Sciences",
+
+    XH: "Humanities & Social Sciences",
+
+    XL: "Life Sciences"
+
+};
+
+
+const papers = Object.keys(rows);
+
+
+/* =========================================================
+   CLUSTERS
+   ========================================================= */
+
+const clusters = {
+
+    "Computing & AI": {
+
+        color: "#55a7ff",
+
+        description:
+            "Computing, AI, mathematics and quantitative analysis.",
+
+        papers: [
+            "CS",
+            "DA",
+            "EC",
+            "EE",
+            "IN",
+            "MA",
+            "RA",
+            "ST"
+        ]
+
+    },
+
+
+    "Core Engineering": {
+
+        color: "#ff6b81",
+
+        description:
+            "Traditional engineering and engineering-science papers.",
+
+        papers: [
+            "AE",
+            "CE",
+            "CH",
+            "ME",
+            "NM",
+            "PI",
+            "MT",
+            "XE"
+        ]
+
+    },
+
+
+    "Earth, Environment & Agriculture": {
+
+        color: "#ffc857",
+
+        description:
+            "Earth sciences, environment, agriculture and related disciplines.",
+
+        papers: [
+            "AG",
+            "AR",
+            "ES",
+            "GE",
+            "GG",
+            "MN"
+        ]
+
+    },
+
+
+    "Life Sciences & Chemistry": {
+
+        color: "#48df8b",
+
+        description:
+            "Biological sciences, chemistry and related papers.",
+
+        papers: [
+            "BM",
+            "BT",
+            "CY",
+            "EY",
+            "PE",
+            "XL",
+            "PH"
+        ]
+
+    }
+
+};
+
+
+/* =========================================================
+   DEGREE
+   ========================================================= */
+
+const degree = {};
+
+papers.forEach(p => {
+
+    degree[p] = rows[p].length;
+
+});
+
+
+/* =========================================================
+   DIRECTED EDGES
+   ========================================================= */
+
+const edges = [];
+
+papers.forEach(primary => {
+
+    rows[primary].forEach(secondary => {
+
+        edges.push({
+            from: primary,
+            to: secondary
+        });
+
+    });
+
+});
+
+
+/* =========================================================
+   SELECT OPTIONS
+   ========================================================= */
+
+const paperSelect =
+    document.getElementById("paperSelect");
+
+papers.forEach(paper => {
+
+    const option =
+        document.createElement("option");
+
+    option.value = paper;
+
+    option.textContent =
+        `${paper} — ${names[paper]}`;
+
+    paperSelect.appendChild(option);
+
+});
+
+
+/* =========================================================
+   TOP PAPER BAR CHART
+   ========================================================= */
+
+const barList =
+    document.getElementById("barList");
+
+const sortedPapers =
+    [...papers].sort(
+        (a,b) => degree[b] - degree[a]
+    );
+
+const maxDegree =
+    Math.max(...papers.map(p => degree[p]));
+
+
+sortedPapers
+    .slice(0,10)
+    .forEach(paper => {
+
+        const row =
+            document.createElement("div");
+
+        row.className =
+            "bar-row";
+
+        row.innerHTML = `
+
+            <strong>${paper}</strong>
+
+            <div class="bar">
+
+                <div
+                    class="bar-fill"
+                    style="width:${degree[paper] / maxDegree * 100}%">
+                </div>
+
+            </div>
+
+            <span>${degree[paper]}</span>
+
+        `;
+
+        barList.appendChild(row);
+
+    });
+
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+const searchInput =
+    document.getElementById("searchInput");
+
+const searchResults =
+    document.getElementById("searchResults");
+
+
+function renderSearch(query = "") {
+
+    searchResults.innerHTML = "";
+
+    const q =
+        query.toLowerCase().trim();
+
+    const filtered =
+        papers.filter(p =>
+
+            p.toLowerCase().includes(q) ||
+
+            names[p]
+                .toLowerCase()
+                .includes(q)
+
+        );
+
+
+    filtered.forEach(paper => {
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "paper-option";
+
+        item.innerHTML = `
+
+            <div class="paper-code">
+                ${paper}
+            </div>
+
+            <div class="paper-name">
+                ${names[paper]}
+                · ${degree[paper]} options
+            </div>
+
+        `;
+
+        item.addEventListener(
+            "click",
+            () => selectPaper(paper)
+        );
+
+        searchResults.appendChild(item);
+
+    });
+
+}
+
+
+searchInput.addEventListener(
+    "input",
+    e => renderSearch(e.target.value)
+);
+
+renderSearch();
+
+
+/* =========================================================
+   NETWORK POSITIONING
+   ========================================================= */
+
+const svg =
+    document.getElementById("network");
+
+const WIDTH = 900;
+
+const HEIGHT = 620;
+
+const centerX = WIDTH / 2;
+
+const centerY = HEIGHT / 2;
+
+
+const positions = {};
+
+
+/*
+   Arrange papers by degree in concentric rings.
+*/
+
+const ordered =
+    [...papers].sort(
+        (a,b) => degree[b] - degree[a]
+    );
+
+
+ordered.forEach((paper,index) => {
+
+    let radius;
+
+    let count;
+
+    let position;
+
+
+    if (index < 6) {
+
+        radius = 115;
+
+        count = 6;
+
+        position = index;
+
+    }
+
+    else if (index < 18) {
+
+        radius = 225;
+
+        count = 12;
+
+        position = index - 6;
+
+    }
+
+    else {
+
+        radius = 290;
+
+        count = papers.length - 18;
+
+        position = index - 18;
+
+    }
+
+
+    const angle =
+        (position / count) *
+        Math.PI *
+        2 -
+        Math.PI / 2;
+
+
+    positions[paper] = {
+
+        x:
+            centerX +
+            Math.cos(angle) *
+            radius,
+
+        y:
+            centerY +
+            Math.sin(angle) *
+            radius
+
+    };
+
+});
+
+
+/* =========================================================
+   CLUSTER COLOR
+   ========================================================= */
+
+function getClusterColor(paper) {
+
+    for (
+        const [clusterName, cluster]
+        of Object.entries(clusters)
+    ) {
+
+        if (
+            cluster.papers.includes(paper)
+        ) {
+
+            return cluster.color;
+
+        }
+
+    }
+
+    return "#8995a3";
+
+}
+
+
+/* =========================================================
+   SVG EDGES
+   ========================================================= */
+
+const edgeElements = [];
+
+
+edges.forEach(edge => {
+
+    const line =
+        document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "line"
+        );
+
+    line.setAttribute(
+        "x1",
+        positions[edge.from].x
+    );
+
+    line.setAttribute(
+        "y1",
+        positions[edge.from].y
+    );
+
+    line.setAttribute(
+        "x2",
+        positions[edge.to].x
+    );
+
+    line.setAttribute(
+        "y2",
+        positions[edge.to].y
+    );
+
+    line.classList.add("edge");
+
+    svg.appendChild(line);
+
+    edgeElements.push({
+
+        element: line,
+
+        from: edge.from,
+
+        to: edge.to
+
+    });
+
+});
+
+
+/* =========================================================
+   SVG ARROW MARKER
+   ========================================================= */
+
+const defs =
+    document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "defs"
+    );
+
+const marker =
+    document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "marker"
+    );
+
+marker.setAttribute(
+    "id",
+    "arrow"
+);
+
+marker.setAttribute(
+    "viewBox",
+    "0 0 10 10"
+);
+
+marker.setAttribute(
+    "refX",
+    "8"
+);
+
+marker.setAttribute(
+    "refY",
+    "5"
+);
+
+marker.setAttribute(
+    "markerWidth",
+    "5"
+);
+
+marker.setAttribute(
+    "markerHeight",
+    "5"
+);
+
+marker.setAttribute(
+    "orient",
+    "auto-start-reverse"
+);
+
+const arrowPath =
+    document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "path"
+    );
+
+arrowPath.setAttribute(
+    "d",
+    "M 0 0 L 10 5 L 0 10 z"
+);
+
+arrowPath.setAttribute(
+    "fill",
+    "#6d8398"
+);
+
+marker.appendChild(arrowPath);
+
+defs.appendChild(marker);
+
+svg.appendChild(defs);
+
+
+/* Apply arrow marker */
+
+edgeElements.forEach(edge => {
+
+    edge.element.setAttribute(
+        "marker-end",
+        "url(#arrow)"
+    );
+
+});
+
+
+/* =========================================================
+   SVG NODES
+   ========================================================= */
+
+const nodeElements = {};
+
+
+papers.forEach(paper => {
+
+    const group =
+        document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "g"
+        );
+
+    group.classList.add("node");
+
+    group.dataset.paper =
+        paper;
+
+
+    group.setAttribute(
+        "transform",
+        `translate(
+            ${positions[paper].x},
+            ${positions[paper].y}
+        )`
+    );
+
+
+    const circle =
+        document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "circle"
+        );
+
+
+    const radius =
+        13 + degree[paper] * 1.2;
+
+
+    circle.setAttribute(
+        "r",
+        radius
+    );
+
+
+    circle.setAttribute(
+        "fill",
+        getClusterColor(paper)
+    );
+
+
+    group.appendChild(circle);
+
+
+    const text =
+        document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "text"
+        );
+
+
+    text.setAttribute(
+        "text-anchor",
+        "middle"
+    );
+
+    text.setAttribute(
+        "dy",
+        "4"
+    );
+
+    text.textContent =
+        paper;
+
+
+    group.appendChild(text);
+
+
+    group.addEventListener(
+        "click",
+        () => selectPaper(paper)
+    );
+
+
+    svg.appendChild(group);
+
+    nodeElements[paper] =
+        group;
+
+});
+
+
+/* =========================================================
+   SELECT PAPER
+   ========================================================= */
+
+function selectPaper(paper) {
+
+    paperSelect.value =
+        paper;
+
+    updateNetwork(paper);
+
+    updateDetails(paper);
+
+}
+
+
+/* =========================================================
+   UPDATE NETWORK
+   ========================================================= */
+
+function updateNetwork(selected) {
+
+    papers.forEach(paper => {
+
+        nodeElements[paper]
+            .classList.remove("dim");
+
+        nodeElements[paper]
+            .classList.remove("selected");
+
+    });
+
+
+    edgeElements.forEach(edge => {
+
+        edge.element
+            .classList.remove("dim");
+
+        edge.element
+            .classList.remove("active");
+
+    });
+
+
+    if (
+        selected === "ALL"
+    ) {
+
+        return;
+
+    }
+
+
+    nodeElements[selected]
+        .classList.add("selected");
+
+
+    const neighbours =
+        new Set(
+            rows[selected]
+        );
+
+
+    /*
+       Highlight both:
+       selected → secondary
+       secondary → selected
+    */
+
+    papers.forEach(paper => {
+
+        if (
+            paper !== selected &&
+            !neighbours.has(paper) &&
+            !rows[paper].includes(selected)
+        ) {
+
+            nodeElements[paper]
+                .classList.add("dim");
+
+        }
+
+    });
+
+
+    edgeElements.forEach(edge => {
+
+        const active =
+            edge.from === selected ||
+            edge.to === selected;
+
+
+        if (active) {
+
+            edge.element
+                .classList.add("active");
+
+        }
+        else {
+
+            edge.element
+                .classList.add("dim");
+
+        }
+
+    });
+
+}
+
+
+/* =========================================================
+   DETAILS PANEL
+   ========================================================= */
+
+function updateDetails(paper) {
+
+    const details =
+        document.getElementById("details");
+
+
+    if (
+        paper === "ALL"
+    ) {
+
+        details.innerHTML = `
+
+            <div class="details-title">
+                All Papers
+            </div>
+
+            <p class="muted">
+
+                Select a paper from the dropdown,
+                search panel or network.
+
+            </p>
+
+        `;
+
+        return;
+
+    }
+
+
+    const options =
+        rows[paper];
+
+
+    details.innerHTML = `
+
+        <div class="details-title">
+            ${paper}
+        </div>
+
+        <div class="details-code">
+            ${names[paper]}
+        </div>
+
+        <br>
+
+        <strong>
+            ${options.length}
+            permitted secondary paper
+            ${options.length === 1 ? "" : "s"}
+        </strong>
+
+        <div class="combination-list">
+
+            ${
+                options.length
+                ?
+                options.map(
+                    option =>
+                        `<span class="combination">
+                            ${option}
+                        </span>`
+                ).join("")
+                :
+                `<span class="muted">
+                    No secondary paper options
+                </span>`
+            }
+
+        </div>
+
+        ${
+            options.length
+            ?
+            `<div class="callout">
+
+                If <strong>${paper}</strong>
+                is selected as the primary paper,
+                the papers above are the permitted
+                secondary choices.
+
+            </div>`
+            :
+            `<div class="callout">
+
+                <strong>${paper}</strong>
+                does not have a secondary-paper
+                combination in the supplied table.
+
+            </div>`
+        }
+
+    `;
+
+}
+
+
+/* =========================================================
+   SELECT EVENT
+   ========================================================= */
+
+paperSelect.addEventListener(
+    "change",
+    () => {
+
+        selectPaper(
+            paperSelect.value
+        );
+
+    }
+);
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+document
+    .getElementById("resetButton")
+    .addEventListener(
+        "click",
+        () => {
+
+            paperSelect.value =
+                "ALL";
+
+            searchInput.value =
+                "";
+
+            renderSearch();
+
+            updateNetwork(
+                "ALL"
+            );
+
+            updateDetails(
+                "ALL"
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   CLUSTER DISPLAY
+   ========================================================= */
+
+const clusterGrid =
+    document.getElementById(
+        "clusterGrid"
+    );
+
+
+Object.entries(clusters)
+.forEach(
+    ([name,cluster]) => {
+
+        const div =
+            document.createElement("div");
+
+        div.className =
+            "cluster";
+
+
+        div.innerHTML = `
+
+            <h3
+                style="color:${cluster.color}">
+                ${name}
+            </h3>
+
+            <div class="cluster-description">
+                ${cluster.description}
+            </div>
+
+            <div class="cluster-papers">
+
+                ${
+                    cluster.papers
+                    .map(
+                        paper =>
+                            `<span
+                                class="cluster-chip"
+                                data-paper="${paper}">
+                                ${paper}
+                            </span>`
+                    )
+                    .join("")
+                }
+
+            </div>
+
+        `;
+
+
+        div.querySelectorAll(
+            ".cluster-chip"
+        ).forEach(
+            chip => {
+
+                chip.addEventListener(
+                    "click",
+                    () =>
+                        selectPaper(
+                            chip.dataset.paper
+                        )
+                );
+
+            }
+        );
+
+
+        clusterGrid.appendChild(
+            div
+        );
+
+    }
+);
+
+
+/* =========================================================
+   MATRIX
+   ========================================================= */
+
+function buildMatrix() {
+
+    const table =
+        document.getElementById(
+            "matrix"
+        );
+
+
+    let html = `
+        <thead>
+            <tr>
+
+                <th>
+                    Primary ↓
+                    <br>
+                    Secondary →
+                </th>
+
+                ${
+                    papers
+                    .map(
+                        paper =>
+                            `<th title="${names[paper]}">
+                                ${paper}
+                            </th>`
+                    )
+                    .join("")
+                }
+
+            </tr>
+        </thead>
+
+        <tbody>
+    `;
+
+
+    papers.forEach(primary => {
+
+        html += `
+
+            <tr>
+
+                <td>
+                    ${primary}
+                </td>
+
+        `;
+
+
+        papers.forEach(secondary => {
+
+            if (
+                primary === secondary
+            ) {
+
+                html += `
+                    <td class="self">
+                        —
+                    </td>
+                `;
+
+            }
+
+            else if (
+                rows[primary]
+                    .includes(secondary)
+            ) {
+
+                html += `
+                    <td
+                        class="allowed"
+                        title="${primary} → ${secondary}">
+                        ●
+                    </td>
+                `;
+
+            }
+
+            else {
+
+                html += `
+                    <td>
+                        ·
+                    </td>
+                `;
+
+            }
+
+        });
+
+
+        html += `
+            </tr>
+        `;
+
+    });
+
+
+    html += `
+        </tbody>
+    `;
+
+
+    table.innerHTML =
+        html;
+
+}
+
+
+buildMatrix();
+
+
+/* =========================================================
+   INITIAL STATE
+   ========================================================= */
+
+updateNetwork("ALL");
+
+updateDetails("ALL");
+
+
 </script>
+
 </body>
 </html>
